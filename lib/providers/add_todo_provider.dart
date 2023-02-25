@@ -14,6 +14,8 @@ class AddTodoProvider with ChangeNotifier {
 
   bool isChecked = false;
 
+
+
   Future<void> addTodo(TodoModel value) async {
     todoListNotifier.clear();
     final box = await Hive.openBox<TodoModel>('todo_DB');

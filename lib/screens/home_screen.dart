@@ -35,10 +35,13 @@ class HomeScreen extends StatelessWidget {
                   // TodoModel data = showTodoList[index];
                   return ListTile(
                     leading: Checkbox(
-                      value: Provider.of<AddTodoProvider>(context).isChecked,
+                      value: Provider.of<AddTodoProvider>(context)
+                          .isChecked,
                       onChanged: (bool? value) {
                         Provider.of<AddTodoProvider>(context, listen: false)
                             .isChecked = value!;
+                        Provider.of<AddTodoProvider>(context, listen: false)
+                            .getAllTodos();
                       },
                     ),
                     title: Text(Provider.of<AddTodoProvider>(context)
@@ -53,14 +56,10 @@ class HomeScreen extends StatelessWidget {
                       onPressed: () {
                         Provider.of<AddTodoProvider>(context, listen: false)
                             .deleteDialogue(index, context);
-                        // deleteTodo(id:index ,context: context );
-                        // Provider.of<AddTodoProvider>(context, listen: false)
-                        //     .deleteTodo(index);
-                        // Provider.of<AddTodoProvider>(context, listen: false)
-                        //     .getAllTodos();
                       },
                       icon: const Icon(Icons.close),
                     ),
+                    onTap: () {},
                   );
                 },
                 separatorBuilder: (context, index) {
@@ -73,45 +72,4 @@ class HomeScreen extends StatelessWidget {
       }),
     );
   }
-
-  // deleteDialogue(int id, context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadiusDirectional.circular(10),
-  //         ),
-  //         title: const Text(
-  //           'Do you want to delete?',
-  //           style: TextStyle(color: Colors.red),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: const Text(
-  //               'Cancel',
-  //               style: TextStyle(color: Colors.black),
-  //             ),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               Provider.of<AddTodoProvider>(context, listen: false)
-  //                   .deleteTodo(id);
-  //               Navigator.of(context).pop();
-  //               Provider.of<AddTodoProvider>(context, listen: false)
-  //                   .getAllTodos();
-  //             },
-  //             child: const Text(
-  //               'Delete',
-  //               style: TextStyle(color: Colors.black),
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }
