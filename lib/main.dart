@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/data_model.dart';
 import 'package:todo_app/providers/add_todo_provider.dart';
+import 'package:todo_app/providers/update_todo_provider.dart';
 import 'package:todo_app/screens/home_screen.dart';
 
 Future<void> main() async {
@@ -23,7 +24,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AddTodoProvider>(
           create: (_) => AddTodoProvider(),
-        )
+        ),
+        ChangeNotifierProvider<UpdateTodoProvider>(
+          create: (_) => UpdateTodoProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),
-        home:const HomeScreen(),
+        home: const HomeScreen(),
       ),
     );
   }

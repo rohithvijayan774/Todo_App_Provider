@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/model/data_model.dart';
 import 'package:todo_app/providers/add_todo_provider.dart';
+import 'package:todo_app/providers/update_todo_provider.dart';
 import 'package:todo_app/screens/add_todo_screen.dart';
 import 'package:todo_app/screens/checkbox.dart';
+import 'package:todo_app/screens/update_todo_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   // final List<TodoModel> showTodoList;
@@ -33,7 +36,8 @@ class HomeScreen extends StatelessWidget {
               )
             : ListView.separated(
                 itemBuilder: (context, index) {
-                  // TodoModel data = showTodoList[index];
+                  TodoModel data = Provider.of<AddTodoProvider>(context)
+                      .todoListNotifier[index];
                   final pro = Provider.of<AddTodoProvider>(context);
                   final proLF =
                       Provider.of<AddTodoProvider>(context, listen: false);
@@ -46,6 +50,14 @@ class HomeScreen extends StatelessWidget {
                     },
                     delete: () {
                       proLF.deleteDialogue(index, context);
+                    },
+                    longPress: () async {
+                      await Provider.of<UpdateTodoProvider>(context,
+                              listen: false)
+                          .updateTodo(data: data);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => UpdateTodoScreen(index: index),
+                      ));
                     },
                   );
                 },

@@ -6,6 +6,7 @@ class CustomCheckBoxListTile extends StatefulWidget {
   final int index;
   final Function(bool?) onchanged;
   final Function delete;
+  final Function longPress;
 
   const CustomCheckBoxListTile({
     Key? key,
@@ -14,6 +15,7 @@ class CustomCheckBoxListTile extends StatefulWidget {
     required this.index,
     required this.onchanged,
     required this.delete,
+    required this.longPress,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,9 @@ class CustomCheckBoxListTileState extends State<CustomCheckBoxListTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onLongPress: () {},
+      onLongPress: () {
+        widget.longPress();
+      },
       leading: Checkbox(
         value: isChecked,
         onChanged: (value) {
