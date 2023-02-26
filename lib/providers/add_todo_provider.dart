@@ -14,7 +14,22 @@ class AddTodoProvider with ChangeNotifier {
 
   bool isChecked = false;
 
+  List<String> optionsIndex = [];
+  List<bool> optionsValue = [];
+  void onchanges({required value}) {
+    isChecked = value;
+    notifyListeners();
+  }
 
+  addIndexOp({required int index,required bool? value }) {
+    log(index.toString());
+
+
+    optionsIndex.add(index.toString());
+    
+    optionsValue.add(value!);
+    notifyListeners();
+  }
 
   Future<void> addTodo(TodoModel value) async {
     todoListNotifier.clear();
@@ -35,9 +50,6 @@ class AddTodoProvider with ChangeNotifier {
     final box = await Hive.openBox<TodoModel>('todo_DB');
     todoListNotifier.clear();
     todoListNotifier.addAll(box.values);
-    for (var element in todoListNotifier) {
-      log("hive3 : ${element.title}");
-    }
     notifyListeners();
 
 //  await Provider.of<AddTodoProvider>(context).loading(false);
@@ -49,6 +61,11 @@ class AddTodoProvider with ChangeNotifier {
     notifyListeners();
     log('Deleted');
   }
+
+  // toggleTodoDone(int id) async {
+  //   final box = await Hive.openBox<TodoModel>('todo_DB');
+  //   await box.getAt(id);
+  // }
 
   Future<void> saveButtonClick() async {
     final todoTitle = titleController.text;

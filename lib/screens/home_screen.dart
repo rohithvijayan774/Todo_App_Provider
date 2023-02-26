@@ -33,34 +33,54 @@ class HomeScreen extends StatelessWidget {
             : ListView.separated(
                 itemBuilder: (context, index) {
                   // TodoModel data = showTodoList[index];
-                  return ListTile(
-                    leading: Checkbox(
-                      value: Provider.of<AddTodoProvider>(context)
-                          .isChecked,
-                      onChanged: (bool? value) {
-                        Provider.of<AddTodoProvider>(context, listen: false)
-                            .isChecked = value!;
-                        Provider.of<AddTodoProvider>(context, listen: false)
-                            .getAllTodos();
-                      },
-                    ),
-                    title: Text(Provider.of<AddTodoProvider>(context)
+                  final pro = Provider.of<AddTodoProvider>(context);
+                  return CustomCheckBoxListTile(
+                    index: index,
+                    text: Provider.of<AddTodoProvider>(context, listen: false)
                         .todoListNotifier[index]
-                        .title
-                        .toString()),
-                    subtitle: Text(Provider.of<AddTodoProvider>(context)
-                        .todoListNotifier[index]
-                        .description
-                        .toString()),
-                    trailing: IconButton(
-                      onPressed: () {
-                        Provider.of<AddTodoProvider>(context, listen: false)
-                            .deleteDialogue(index, context);
-                      },
-                      icon: const Icon(Icons.close),
-                    ),
-                    onTap: () {},
+                        .title,
+                    onchanged: (value) {
+                      log(value.toString());
+                      Provider.of<AddTodoProvider>(context, listen: false)
+                          .addIndexOp(index: index, value: value);
+                    },
                   );
+                  //
+                  // ListTile(
+                  //   leading: Checkbox(
+                  //     value: pro.optionsValue.length < 0
+                  //         ? true
+                  //         : Provider.of<AddTodoProvider>(context)
+                  //             .optionsValue[index],
+                  //     onChanged: (bool? value) {
+                  //       log(index.toString());
+                  //       Provider.of<AddTodoProvider>(context, listen: false)
+                  //           .addIndexOp(index: index, value: value);
+                  //       log(value.toString());
+
+                  //       // Provider.of<AddTodoProvider>(context, listen: false)
+                  //       //     .onchanges(value: value);
+                  //       Provider.of<AddTodoProvider>(context, listen: false)
+                  //           .getAllTodos();
+                  //     },
+                  //   ),
+                  //   title: Text(Provider.of<AddTodoProvider>(context)
+                  //       .todoListNotifier[index]
+                  //       .title
+                  //       .toString()),
+                  //   subtitle: Text(Provider.of<AddTodoProvider>(context)
+                  //       .todoListNotifier[index]
+                  //       .description
+                  //       .toString()),
+                  //   trailing: IconButton(
+                  //     onPressed: () {
+                  //       Provider.of<AddTodoProvider>(context, listen: false)
+                  //           .deleteDialogue(index, context);
+                  //     },
+                  //     icon: const Icon(Icons.close),
+                  //   ),
+                  //   onTap: () {},
+                  // );
                 },
                 separatorBuilder: (context, index) {
                   return const Divider();
@@ -73,3 +93,40 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+//----------------------------------Check Box-----------------------------------
+
+// class CustomCheckBoxListTile extends StatefulWidget {
+//   final String text;
+//   final int index;
+//   final Function(bool?) onchanged;
+
+//   const CustomCheckBoxListTile({
+//     Key? key,
+//     required this.text,
+//     required this.index,
+//     required this.onchanged,
+//   }) : super(key: key);
+
+//   @override
+//   CustomCheckBoxListTileState createState() => CustomCheckBoxListTileState();
+// }
+
+// class CustomCheckBoxListTileState extends State<CustomCheckBoxListTile> {
+//   bool isChecked = false;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return CheckboxListTile(
+//       value: isChecked,
+//       title: Text(widget.text),
+//       controlAffinity: ListTileControlAffinity.leading,
+//       onChanged: (value) {
+//         setState(() {
+//           isChecked = value!;
+//           widget.onchanged(value);
+//         });
+//       },
+//     );
+//   }
+// }
