@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/providers/add_todo_provider.dart';
 import 'package:todo_app/screens/add_todo_screen.dart';
+import 'package:todo_app/screens/checkbox.dart';
 
 class HomeScreen extends StatelessWidget {
   // final List<TodoModel> showTodoList;
@@ -34,53 +35,19 @@ class HomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   // TodoModel data = showTodoList[index];
                   final pro = Provider.of<AddTodoProvider>(context);
+                  final proLF =
+                      Provider.of<AddTodoProvider>(context, listen: false);
                   return CustomCheckBoxListTile(
+                    text: proLF.todoListNotifier[index].title,
+                    subtitle: proLF.todoListNotifier[index].description,
                     index: index,
-                    text: Provider.of<AddTodoProvider>(context, listen: false)
-                        .todoListNotifier[index]
-                        .title,
                     onchanged: (value) {
-                      log(value.toString());
-                      Provider.of<AddTodoProvider>(context, listen: false)
-                          .addIndexOp(index: index, value: value);
+                      proLF.addIndexOp(index: index, value: value);
+                    },
+                    delete: () {
+                      proLF.deleteDialogue(index, context);
                     },
                   );
-                  //
-                  // ListTile(
-                  //   leading: Checkbox(
-                  //     value: pro.optionsValue.length < 0
-                  //         ? true
-                  //         : Provider.of<AddTodoProvider>(context)
-                  //             .optionsValue[index],
-                  //     onChanged: (bool? value) {
-                  //       log(index.toString());
-                  //       Provider.of<AddTodoProvider>(context, listen: false)
-                  //           .addIndexOp(index: index, value: value);
-                  //       log(value.toString());
-
-                  //       // Provider.of<AddTodoProvider>(context, listen: false)
-                  //       //     .onchanges(value: value);
-                  //       Provider.of<AddTodoProvider>(context, listen: false)
-                  //           .getAllTodos();
-                  //     },
-                  //   ),
-                  //   title: Text(Provider.of<AddTodoProvider>(context)
-                  //       .todoListNotifier[index]
-                  //       .title
-                  //       .toString()),
-                  //   subtitle: Text(Provider.of<AddTodoProvider>(context)
-                  //       .todoListNotifier[index]
-                  //       .description
-                  //       .toString()),
-                  //   trailing: IconButton(
-                  //     onPressed: () {
-                  //       Provider.of<AddTodoProvider>(context, listen: false)
-                  //           .deleteDialogue(index, context);
-                  //     },
-                  //     icon: const Icon(Icons.close),
-                  //   ),
-                  //   onTap: () {},
-                  // );
                 },
                 separatorBuilder: (context, index) {
                   return const Divider();
@@ -93,40 +60,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-//----------------------------------Check Box-----------------------------------
-
-// class CustomCheckBoxListTile extends StatefulWidget {
-//   final String text;
-//   final int index;
-//   final Function(bool?) onchanged;
-
-//   const CustomCheckBoxListTile({
-//     Key? key,
-//     required this.text,
-//     required this.index,
-//     required this.onchanged,
-//   }) : super(key: key);
-
-//   @override
-//   CustomCheckBoxListTileState createState() => CustomCheckBoxListTileState();
-// }
-
-// class CustomCheckBoxListTileState extends State<CustomCheckBoxListTile> {
-//   bool isChecked = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return CheckboxListTile(
-//       value: isChecked,
-//       title: Text(widget.text),
-//       controlAffinity: ListTileControlAffinity.leading,
-//       onChanged: (value) {
-//         setState(() {
-//           isChecked = value!;
-//           widget.onchanged(value);
-//         });
-//       },
-//     );
-//   }
-// }
