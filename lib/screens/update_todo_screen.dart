@@ -14,15 +14,16 @@ class UpdateTodoScreen extends StatelessWidget {
   final int index;
 
   updateTodo({required context}) async {
+    final proLF = Provider.of<UpdateTodoProvider>(context, listen: false);
     if (formKey.currentState!.validate()) {
       final box = await Hive.openBox<TodoModel>('todo_DB');
       box.putAt(
-          Provider.of<UpdateTodoProvider>(context, listen: false).id ?? index,
+          proLF.id ?? index,
           TodoModel(
-            title: Provider.of<UpdateTodoProvider>(context, listen: false)
+            title:proLF
                 .titleController
                 .text,
-            description: Provider.of<UpdateTodoProvider>(context, listen: false)
+            description: proLF
                 .descriptionController
                 .text,
           ));
@@ -33,6 +34,7 @@ class UpdateTodoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pro = Provider.of<UpdateTodoProvider>(context);
     Future.delayed(Duration.zero);
     log('UpdateScreen');
     return Scaffold(
@@ -52,8 +54,7 @@ class UpdateTodoScreen extends StatelessWidget {
                   labelText: 'Title',
                 ),
                 textCapitalization: TextCapitalization.words,
-                controller:
-                    Provider.of<UpdateTodoProvider>(context).titleController,
+                controller: pro.titleController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a title';
@@ -71,8 +72,7 @@ class UpdateTodoScreen extends StatelessWidget {
                   labelText: 'Description',
                 ),
                 textCapitalization: TextCapitalization.sentences,
-                controller: Provider.of<UpdateTodoProvider>(context)
-                    .descriptionController,
+                controller: pro.descriptionController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'please enter description';
@@ -88,6 +88,7 @@ class UpdateTodoScreen extends StatelessWidget {
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     updateTodo(context: context);
+                    pro.todoUpdateMessage(context: context);
                   }
                 },
                 child: const Text(

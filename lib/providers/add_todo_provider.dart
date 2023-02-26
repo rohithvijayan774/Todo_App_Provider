@@ -10,6 +10,9 @@ class AddTodoProvider with ChangeNotifier {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+  final addMessage = 'Todo added Successfully';
+  final deleteMessage = 'Todo deleted';
+
   List<TodoModel> todoListNotifier = [];
 
   bool isChecked = false;
@@ -21,12 +24,11 @@ class AddTodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  addIndexOp({required int index,required bool? value }) {
+  addIndexOp({required int index, required bool? value}) {
     log(index.toString());
 
-
     optionsIndex.add(index.toString());
-    
+
     optionsValue.add(value!);
     notifyListeners();
   }
@@ -39,20 +41,16 @@ class AddTodoProvider with ChangeNotifier {
     for (var element in todoListNotifier) {
       log("hive : ${element.title}");
     }
-    // await getAllTodos();
-    // await getAllTodos();
+
     notifyListeners();
     log('data added');
   }
 
   Future<void> getAllTodos() async {
-// await  Provider.of<AddTodoProvider>(context).loading(true);
     final box = await Hive.openBox<TodoModel>('todo_DB');
     todoListNotifier.clear();
     todoListNotifier.addAll(box.values);
     notifyListeners();
-
-//  await Provider.of<AddTodoProvider>(context).loading(false);
   }
 
   Future<void> deleteTodo(int id) async {
@@ -61,11 +59,6 @@ class AddTodoProvider with ChangeNotifier {
     notifyListeners();
     log('Deleted');
   }
-
-  // toggleTodoDone(int id) async {
-  //   final box = await Hive.openBox<TodoModel>('todo_DB');
-  //   await box.getAt(id);
-  // }
 
   Future<void> saveButtonClick() async {
     final todoTitle = titleController.text;
@@ -122,6 +115,8 @@ class AddTodoProvider with ChangeNotifier {
                 Navigator.of(context).pop();
                 Provider.of<AddTodoProvider>(context, listen: false)
                     .getAllTodos();
+                Provider.of<AddTodoProvider>(context, listen: false)
+                    .todoDeleteMessage(context: context);
               },
               child: const Text(
                 'Delete',
@@ -131,6 +126,30 @@ class AddTodoProvider with ChangeNotifier {
           ],
         );
       },
+    );
+  }
+
+  void todoAddedMessage({required context}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.green,
+        margin: const EdgeInsets.all(10),
+        content: Text(addMessage),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  void todoDeleteMessage({required context}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.red,
+        margin: const EdgeInsets.all(10),
+        content: Text(deleteMessage),
+        duration: const Duration(seconds: 3),
+      ),
     );
   }
 }

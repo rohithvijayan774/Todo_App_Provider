@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -11,7 +10,6 @@ class AddTodoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -83,6 +81,8 @@ class AddTodoScreen extends StatelessWidget {
   Future<void> onButtonPress(context) async {
     await Provider.of<AddTodoProvider>(context, listen: false)
         .saveButtonClick();
+    Provider.of<AddTodoProvider>(context, listen: false)
+        .todoAddedMessage(context: context);
     Provider.of<AddTodoProvider>(context, listen: false).clearField();
     await Provider.of<AddTodoProvider>(context, listen: false).getAllTodos();
   }

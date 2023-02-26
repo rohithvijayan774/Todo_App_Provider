@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Todo App'),
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Add new',
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.of(context)
@@ -34,39 +35,42 @@ class HomeScreen extends StatelessWidget {
             ? const Center(
                 child: Text('No datas found'),
               )
-            : ListView.separated(
-                itemBuilder: (context, index) {
-                  TodoModel data = Provider.of<AddTodoProvider>(context)
-                      .todoListNotifier[index];
-                  final pro = Provider.of<AddTodoProvider>(context);
-                  final proLF =
-                      Provider.of<AddTodoProvider>(context, listen: false);
-                  return CustomCheckBoxListTile(
-                    text: proLF.todoListNotifier[index].title,
-                    subtitle: proLF.todoListNotifier[index].description,
-                    index: index,
-                    onchanged: (value) {
-                      proLF.addIndexOp(index: index, value: value);
-                    },
-                    delete: () {
-                      proLF.deleteDialogue(index, context);
-                    },
-                    longPress: () async {
-                      await Provider.of<UpdateTodoProvider>(context,
-                              listen: false)
-                          .updateTodo(data: data);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => UpdateTodoScreen(index: index),
-                      ));
-                    },
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider();
-                },
-                itemCount: Provider.of<AddTodoProvider>(context)
-                    .todoListNotifier
-                    .length,
+            : Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    TodoModel data = Provider.of<AddTodoProvider>(context)
+                        .todoListNotifier[index];
+                    final pro = Provider.of<AddTodoProvider>(context);
+                    final proLF =
+                        Provider.of<AddTodoProvider>(context, listen: false);
+                    return CustomCheckBoxListTile(
+                      text: proLF.todoListNotifier[index].title,
+                      subtitle: proLF.todoListNotifier[index].description,
+                      index: index,
+                      onchanged: (value) {
+                        proLF.addIndexOp(index: index, value: value);
+                      },
+                      delete: () {
+                        proLF.deleteDialogue(index, context);
+                      },
+                      longPress: () async {
+                        await Provider.of<UpdateTodoProvider>(context,
+                                listen: false)
+                            .updateTodo(data: data);
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => UpdateTodoScreen(index: index),
+                        ));
+                      },
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                  itemCount: Provider.of<AddTodoProvider>(context)
+                      .todoListNotifier
+                      .length,
+                ),
               );
       }),
     );
