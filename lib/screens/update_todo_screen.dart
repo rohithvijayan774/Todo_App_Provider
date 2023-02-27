@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -36,7 +35,6 @@ class UpdateTodoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final pro = Provider.of<UpdateTodoProvider>(context);
     Future.delayed(Duration.zero);
-    log('UpdateScreen');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/data_model.dart';
 
@@ -10,23 +9,16 @@ class AddTodoProvider with ChangeNotifier {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+
   final addMessage = 'Todo added Successfully';
   final deleteMessage = 'Todo deleted';
 
   List<TodoModel> todoListNotifier = [];
 
-  bool isChecked = false;
-
   List<String> optionsIndex = [];
   List<bool> optionsValue = [];
-  void onchanges({required value}) {
-    isChecked = value;
-    notifyListeners();
-  }
 
-  addIndexOp({required int index, required bool? value}) {
-    log(index.toString());
-
+  addIndex({required int index, required bool? value}) {
     optionsIndex.add(index.toString());
 
     optionsValue.add(value!);
@@ -38,12 +30,7 @@ class AddTodoProvider with ChangeNotifier {
     final box = await Hive.openBox<TodoModel>('todo_DB');
     await box.add(value);
     todoListNotifier.add(value);
-    for (var element in todoListNotifier) {
-      log("hive : ${element.title}");
-    }
-
     notifyListeners();
-    log('data added');
   }
 
   Future<void> getAllTodos() async {
@@ -57,13 +44,11 @@ class AddTodoProvider with ChangeNotifier {
     final box = await Hive.openBox<TodoModel>('todo_DB');
     await box.deleteAt(id);
     notifyListeners();
-    log('Deleted');
   }
 
   Future<void> saveButtonClick() async {
     final todoTitle = titleController.text;
     final todoDescription = descriptionController.text;
-    log("title : $todoTitle\n description : $todoDescription");
 
     if (todoTitle.isEmpty || todoDescription.isEmpty) {
       return;

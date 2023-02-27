@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/data_model.dart';
@@ -16,7 +14,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<AddTodoProvider>(context, listen: false).getAllTodos();
-    log('building');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -41,15 +38,16 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     TodoModel data = Provider.of<AddTodoProvider>(context)
                         .todoListNotifier[index];
-                    final pro = Provider.of<AddTodoProvider>(context);
+                    // final pro = Provider.of<AddTodoProvider>(context);
                     final proLF =
                         Provider.of<AddTodoProvider>(context, listen: false);
+
                     return CustomCheckBoxListTile(
                       text: proLF.todoListNotifier[index].title,
                       subtitle: proLF.todoListNotifier[index].description,
                       index: index,
                       onchanged: (value) {
-                        proLF.addIndexOp(index: index, value: value);
+                        proLF.addIndex(index: index, value: value);
                       },
                       delete: () {
                         proLF.deleteDialogue(index, context);
